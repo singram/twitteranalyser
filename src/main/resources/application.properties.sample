@@ -1,0 +1,18 @@
+# Edit and rename this file as application.properties
+
+# Banner created by
+# http://patorjk.com/software/taag
+
+# configure application
+spring.main.web-environment=false
+
+# configure twitter
+spring.social.twitter.appId=myKey
+spring.social.twitter.appSecret=myKey
+spring.social.twitter.accessToken=myKey
+spring.social.twitter.accessTokenSecret=myKey
+
+# configure twitter processor pool
+taskExecutor.corePoolSize=5
+taskExecutor.maxPoolSize=10
+taskExecutor.queueCapacity=25

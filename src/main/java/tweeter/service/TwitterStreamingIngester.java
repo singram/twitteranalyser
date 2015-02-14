@@ -8,11 +8,7 @@ import org.springframework.stereotype.Service;
 
 import org.apache.log4j.Logger;
 
-import javax.annotation.PostConstruct;
-
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 @Service
 public class TwitterStreamingIngester implements StreamListener {
@@ -21,11 +17,13 @@ public class TwitterStreamingIngester implements StreamListener {
 	
 	@Autowired
 	private Twitter twitter;
-
+	
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
+	
+	@Autowired
+	private TweetProcessor tweetProcessor;
 
-	private BlockingQueue<Tweet> queue = new ArrayBlockingQueue<Tweet>(20);
 	private Logger log = Logger.getLogger(TwitterStreamingIngester.class);
 
 	public void run() {
@@ -51,36 +49,23 @@ public class TwitterStreamingIngester implements StreamListener {
 		return authorized;
 	}
 
-	@PostConstruct
-	public void afterPropertiesSet() {
-		setThreads();
-	}
-
-	public void setThreads() {
-		for (int i = 0; i < taskExecutor.getMaxPoolSize(); i++) {
-			taskExecutor.execute(new TweetProcessor(queue));
-		}
-	}
-
 	@Override
 	public void onTweet(Tweet tweet) {
-		if (!queue.offer(tweet)) {
-			log.warn("Queue capacity reached.  Tweet dropped");
-		}
+		tweetProcessor.processTweet(tweet);
 	}
 
 	@Override
 	public void onDelete(StreamDeleteEvent deleteEvent) {
-		log.info("Delete event");
+		log.debug("Delete event: " + deleteEvent.getTweetId());
 	}
 
 	@Override
 	public void onLimit(int numberOfLimitedTweets) {
-		log.info("Limit event");
+		log.debug("Limit event: " + numberOfLimitedTweets);
 	}
 
 	@Override
 	public void onWarning(StreamWarningEvent warningEvent) {
-		log.info("Warning event");
+		log.warn("Warning event: " + warningEvent.getMessage());
 	}
 }

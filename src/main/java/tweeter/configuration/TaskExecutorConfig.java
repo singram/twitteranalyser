@@ -54,7 +54,7 @@ public class TaskExecutorConfig {
 		this.queueCapacity = queueCapacity;
 	}
 
-	@Bean
+	@Bean(name="taskExecutor")
 	public ThreadPoolTaskExecutor taskExecutor() {
 		ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
 		taskExecutor.setCorePoolSize(corePoolSize);

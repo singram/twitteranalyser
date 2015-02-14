@@ -27,7 +27,8 @@ repositories {
 dependencies {
     compile("org.springframework.boot:spring-boot-starter")
     compile("org.springframework.social:spring-social-twitter")
-    compile("org.apache.commons:commons-lang3:3.3.2")    
+    compile("org.springframework.boot:spring-boot-starter-amqp")
+    compile("org.apache.commons:commons-lang3:3.3.2")
     testCompile("junit:junit")
 }
 

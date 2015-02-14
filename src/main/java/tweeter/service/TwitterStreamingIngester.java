@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import org.apache.log4j.Logger;
 
+
 import java.util.*;
 
 @Service
@@ -16,10 +17,13 @@ public class TwitterStreamingIngester implements StreamListener {
 	// https://dev.twitter.com/streaming/overview/messages-types
 	
 	@Autowired
+	private TweetTracker tweetTracker;
+
+	@Autowired
 	private Twitter twitter;
 	
 	@Autowired
-	private ThreadPoolTaskExecutor taskExecutor;
+	private ThreadPoolTaskExecutor tweetTaskExecutor;
 	
 	@Autowired
 	private TweetProcessor tweetProcessor;
@@ -51,21 +55,25 @@ public class TwitterStreamingIngester implements StreamListener {
 
 	@Override
 	public void onTweet(Tweet tweet) {
+		tweetTracker.incrementTweets();
 		tweetProcessor.processTweet(tweet);
 	}
 
 	@Override
 	public void onDelete(StreamDeleteEvent deleteEvent) {
+		tweetTracker.incrementDeletedEvents();
 		log.debug("Delete event: " + deleteEvent.getTweetId());
 	}
 
 	@Override
 	public void onLimit(int numberOfLimitedTweets) {
+		tweetTracker.incrementLimitEvents();
 		log.debug("Limit event: " + numberOfLimitedTweets);
 	}
 
 	@Override
 	public void onWarning(StreamWarningEvent warningEvent) {
+		tweetTracker.incrementWarningEvents();
 		log.warn("Warning event: " + warningEvent.getMessage());
 	}
 }

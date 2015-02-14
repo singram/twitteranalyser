@@ -4,7 +4,7 @@
 			<pattern>%d{yyyy-MM-dd HH:mm:ss}|%t|%p|%m%n</pattern>
 		</encoder>
 	</appender>
-	<logger name="tweeter" additivity="false" level="trace">
+	<logger name="tweeter" additivity="false" level="info">
 		<appender-ref ref="stdout" />
 	</logger>
 	<logger name="org.springframework" additivity="false" level="error">

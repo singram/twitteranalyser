@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties(prefix = "taskExecutor")
-public class TaskExecutorConfig {
+public class TweetTaskExecutorConfig {
 	private int corePoolSize;
 	private int maxPoolSize;
 	private int queueCapacity;
@@ -54,7 +54,7 @@ public class TaskExecutorConfig {
 		this.queueCapacity = queueCapacity;
 	}
 
-	@Bean(name="taskExecutor")
+	@Bean(name="tweetTaskExecutor")
 	public ThreadPoolTaskExecutor taskExecutor() {
 		ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
 		taskExecutor.setCorePoolSize(corePoolSize);

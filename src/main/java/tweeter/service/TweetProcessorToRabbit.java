@@ -8,14 +8,14 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.stereotype.Service;
 
+import tweeter.configuration.RabbitMqConfig;
+
 @Service
 @Async("tweetTaskExecutor")
 @Configuration
 public class TweetProcessorToRabbit implements TweetProcessor {
 
 	private Logger log = Logger.getLogger(TweetProcessorToRabbit.class);
-
-	public final static String queueName = "tweets";
 
 	@Autowired
 	RabbitTemplate rabbitTemplate;
@@ -24,7 +24,7 @@ public class TweetProcessorToRabbit implements TweetProcessor {
 	public void processTweet(Tweet tweet) {
 		log.debug("Processing "+tweet.getText());
 		if (tweet.getLanguageCode().equalsIgnoreCase("en")) {
-			rabbitTemplate.convertAndSend(queueName, tweet);
+			rabbitTemplate.convertAndSend(RabbitMqConfig.queueName, tweet);
 		}
 	}
 

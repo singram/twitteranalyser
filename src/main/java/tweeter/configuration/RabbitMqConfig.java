@@ -6,13 +6,13 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.context.annotation.Bean;
 
-import tweeter.service.TweetProcessorToRabbit;
-
 public class RabbitMqConfig {
+
+	public final static String queueName = "tweets";
 
 	@Bean
 	Queue queue() {
-		return new Queue(TweetProcessorToRabbit.queueName, false);
+		return new Queue(queueName, false);
 	}
 
 	@Bean
@@ -22,8 +22,7 @@ public class RabbitMqConfig {
 
 	@Bean
 	Binding binding(Queue queue, TopicExchange exchange) {
-		return BindingBuilder.bind(queue).to(exchange).with(TweetProcessorToRabbit.queueName);
+		return BindingBuilder.bind(queue).to(exchange).with(queueName);
 	}
-
 
 }

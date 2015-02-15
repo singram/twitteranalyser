@@ -38,7 +38,7 @@ public class TweetTracker {
     }
     
 	@Scheduled(fixedRate = 5000)
-	public void reportCurrentTime() {
+	public void reportStreamProgress() {
 		log.info(this);
 	}
 

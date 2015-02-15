@@ -1,0 +1,6 @@
+# Edit and rename this file as application.properties
+
+# configure twitter processor pool
+taskExecutor.corePoolSize=5
+taskExecutor.maxPoolSize=10
+taskExecutor.queueCapacity=25

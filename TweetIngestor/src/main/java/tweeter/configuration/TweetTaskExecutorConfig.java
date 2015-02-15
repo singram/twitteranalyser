@@ -54,7 +54,7 @@ public class TweetTaskExecutorConfig {
 		this.queueCapacity = queueCapacity;
 	}
 
-	@Bean(name="tweetTaskExecutor")
+	@Bean(name = "tweetTaskExecutor")
 	public ThreadPoolTaskExecutor taskExecutor() {
 		ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
 		taskExecutor.setCorePoolSize(corePoolSize);

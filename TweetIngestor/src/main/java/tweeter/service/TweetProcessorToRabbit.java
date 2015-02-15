@@ -22,8 +22,9 @@ public class TweetProcessorToRabbit implements TweetProcessor {
 
 	@Override
 	public void processTweet(Tweet tweet) {
-		log.debug("Processing "+tweet.getText());
+		log.info("Processing " + tweet.getText());
 		if (tweet.getLanguageCode().equalsIgnoreCase("en")) {
+			log.info(tweet.getExtraData().toString());
 			rabbitTemplate.convertAndSend(RabbitMqConfig.queueName, tweet);
 		}
 	}

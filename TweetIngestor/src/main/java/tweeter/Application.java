@@ -17,23 +17,22 @@ import tweeter.service.TwitterStreamingIngester;
 @EnableAutoConfiguration
 @EnableScheduling
 @EnableAsync
-public class Application implements CommandLineRunner
-{
+public class Application implements CommandLineRunner {
 
 	@Autowired
 	private TwitterStreamingIngester twitterStreamingIngester;
-	
+
 	public static void main(String[] args) throws Exception {
-		
+
 		ApplicationContext ctx = SpringApplication.run(Application.class);
 
-//		System.out.println("Let's inspect the beans provided by Spring Boot:");
-//
-//		String[] beanNames = ctx.getBeanDefinitionNames();
-//		Arrays.sort(beanNames);
-//		for (String beanName : beanNames) {
-//			System.out.println(beanName);
-//		}
+		// System.out.println("Let's inspect the beans provided by Spring Boot:");
+		//
+		// String[] beanNames = ctx.getBeanDefinitionNames();
+		// Arrays.sort(beanNames);
+		// for (String beanName : beanNames) {
+		// System.out.println(beanName);
+		// }
 	}
 
 	@Override

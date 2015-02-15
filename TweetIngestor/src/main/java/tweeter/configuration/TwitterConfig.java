@@ -8,7 +8,7 @@ import org.springframework.social.twitter.api.impl.TwitterTemplate;
 
 @Configuration
 public class TwitterConfig {
-	
+
 	@Bean
 	// Params injected from application.properties file:
 	public Twitter twitter(

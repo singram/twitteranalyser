@@ -8,23 +8,22 @@ import org.springframework.stereotype.Service;
 
 import org.apache.log4j.Logger;
 
-
 import java.util.*;
 
 @Service
 public class TwitterStreamingIngester implements StreamListener {
 
 	// https://dev.twitter.com/streaming/overview/messages-types
-	
+
 	@Autowired
 	private TweetTracker tweetTracker;
 
 	@Autowired
 	private Twitter twitter;
-	
+
 	@Autowired
 	private ThreadPoolTaskExecutor tweetTaskExecutor;
-	
+
 	@Autowired
 	private TweetProcessor tweetProcessor;
 
@@ -34,8 +33,17 @@ public class TwitterStreamingIngester implements StreamListener {
 		if (isAuthorized()) {
 			List<StreamListener> listeners = new ArrayList<StreamListener>();
 			listeners.add(this);
+			// FilterStreamParameters parameters = new FilterStreamParameters();
+			// PA Coordinates as per
+			// http://www.netstate.com/states/geography/pa_geography.htm
+			// parameters.addLocation(west, south, east, north);
+			// parameters.addLocation(80.31f, 39.43f, 74.43f, 42.0f);
+			// parameters.addLocation(-90.31f, 30.43f, -60.43f, 50.0f);
+			// parameters.track("FiftyShadesOfGray");
+			// twitter.streamingOperations().filter(parameters, listeners);
 			twitter.streamingOperations().sample(listeners);
-			log.info("Listening to Twitter stream");
+			log.info("Listening to Twitter stream - " + listeners.size()
+					+ "listener(s)");
 		}
 	}
 

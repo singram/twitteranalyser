@@ -9,17 +9,23 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.social.twitter.api.Tweet;
 
+import tweetprocessor.service.RedisRepository;
+import tweetprocessor.service.SentimentAnalysis;
+
 public class MessageReceiver {
 
-	@Autowired
-	private StringRedisTemplate template;
-
 	private Logger log = Logger.getLogger(MessageReceiver.class);
+	
+	@Autowired
+	private RedisRepository redisRepo;
+	
+	@Autowired
+	private SentimentAnalysis sentiment;
+
+	private AtomicInteger tweetCounter = new AtomicInteger(0);
 
 	private CountDownLatch latch = new CountDownLatch(1);
 
@@ -32,27 +38,15 @@ public class MessageReceiver {
 		log.info("Creating MessageReceiver");
 	}
 
-	public void incrementTagCounts(Set<String> hashTags) {
-		for (String tag : hashTags) {
-			incrementTagCount(tag);
-		}
-	}
-
-	public void incrementTagCount(String tag) {
-		HashOperations<String, String, Integer> ops = this.template
-				.opsForHash();
-		String hashId = "tagcounts";
-		ops.increment(hashId, tag, 1);
-	}
-
-	private AtomicInteger tweetCounter = new AtomicInteger(0);
-
 	public void receiveMessage(Tweet message) {
 		Set<String> hashTags = hashtagsFromTweet(message.getText());
 		if (!hashTags.isEmpty()) {
-			incrementTagCounts(hashTags);
+			redisRepo.incrementTagCounts(hashTags);
 			log.info(hashTags.toString());
 		}
+		int sentiment = this.sentiment.extract(message.getText());
+		log.info(sentiment + " || " + message.getText());
+//		message.getUser().getLocation();
 		tweetCounter.incrementAndGet();
 		latch.countDown();
 	}

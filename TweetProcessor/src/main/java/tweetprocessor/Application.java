@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -20,8 +19,8 @@ public class Application implements CommandLineRunner {
 	RabbitTemplate rabbitTemplate;
 
 	public static void main(String[] args) throws Exception {
-
-		ApplicationContext ctx = SpringApplication.run(Application.class);
+		SpringApplication.run(Application.class);
+//		ApplicationContext ctx = SpringApplication.run(Application.class);
 
 		// System.out.println("Let's inspect the beans provided by Spring Boot:");
 		//

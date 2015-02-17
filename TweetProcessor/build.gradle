@@ -29,6 +29,8 @@ dependencies {
     compile("org.springframework.social:spring-social-twitter")
     compile("org.springframework.boot:spring-boot-starter-amqp")
     compile("org.springframework.boot:spring-boot-starter-redis")
+    compile("edu.stanford.nlp:stanford-corenlp:3.4.1")
+    compile("edu.stanford.nlp:stanford-corenlp:3.4.1:models")
     compile("org.apache.commons:commons-lang3:3.3.2")
     testCompile("junit:junit")
 }

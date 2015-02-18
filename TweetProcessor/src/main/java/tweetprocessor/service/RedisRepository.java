@@ -1,5 +1,6 @@
 package tweetprocessor.service;
 
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,12 @@ public class RedisRepository {
 		ops.increment(hashId, tag, 1);
 	}
 
+	public Set<Object> getTags() {
+		return this.template.opsForHash().keys("tagcounts");
+	}
+
+	public Map<Object, Object> getTagCounts() {
+	  return this.template.opsForHash().entries("tagcounts");
+	}
 
 }

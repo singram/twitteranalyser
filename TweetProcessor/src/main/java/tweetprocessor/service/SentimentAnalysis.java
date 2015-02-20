@@ -29,9 +29,11 @@ public class SentimentAnalysis {
 		if (!StringUtils.isBlank(text)) {
 			int longest = 0;
 			Annotation annotation = nlp.process(text);
-			// Longest sentence governs sentiment returned. 
-			for (CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class)) {
-				Tree tree = sentence.get(SentimentCoreAnnotations.AnnotatedTree.class);
+			// Longest sentence governs sentiment returned.
+			for (CoreMap sentence : annotation
+					.get(CoreAnnotations.SentencesAnnotation.class)) {
+				Tree tree = sentence
+						.get(SentimentCoreAnnotations.AnnotatedTree.class);
 				int sentiment = RNNCoreAnnotations.getPredictedClass(tree);
 				String partText = sentence.toString();
 				if (partText.length() > longest) {
@@ -41,6 +43,6 @@ public class SentimentAnalysis {
 
 			}
 		}
-		return mainSentiment-2;
+		return mainSentiment - 2;
 	}
 }

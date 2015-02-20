@@ -18,10 +18,10 @@ import tweetprocessor.service.SentimentAnalysis;
 public class MessageReceiver {
 
 	private Logger log = Logger.getLogger(MessageReceiver.class);
-	
+
 	@Autowired
 	private RedisRepository redisRepo;
-	
+
 	@Autowired
 	private SentimentAnalysis sentiment;
 
@@ -45,8 +45,9 @@ public class MessageReceiver {
 			log.info(hashTags.toString());
 		}
 		int sentiment = this.sentiment.extract(message.getText());
-		log.info(sentiment + " || " + message.getText());
-//		message.getUser().getLocation();
+		log.debug(sentiment + " || " + message.getText());
+		redisRepo.incrementTweetsAtCount(message.getCreatedAt());
+		redisRepo.incrementSentimentAtCount(message.getCreatedAt(), sentiment);
 		tweetCounter.incrementAndGet();
 		latch.countDown();
 	}

@@ -47,7 +47,7 @@ public class RabbitMqConfig {
 
 	@Bean
 	MessageReceiver receiver() {
-//		return new MessageReceiver();
+		// return new MessageReceiver();
 		return new SlowMessageReceiver();
 	}
 

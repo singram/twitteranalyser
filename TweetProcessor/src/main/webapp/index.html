@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Twitter Analysis</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css"
+	href="webjars/bootstrap/3.0.3/css/bootstrap.min.css" />
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://dimplejs.org/dist/dimple.v2.1.2.min.js"></script>
+</head>
+<body>
+	<script type="text/javascript" src="webjars/jquery/2.0.3/jquery.min.js"></script>
+	<div id="navbar" class="navbar navbar-default" role="navigation">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target=".navbar-collapse">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand"
+				href="https://github.com/spring-projects/spring-boot"> Spring
+				Boot </a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a href="./"> Home </a></li>
+			</ul>
+		</div>
+	</div>
+	<h1>Twitter Analysis</h1>
+	<h3>Volume</h3>
+	<div id='tweetvolume'></div>
+	<h3>Sentiment over time</h3>
+	<div id='tweetsentiment'></div>
+	<script type="text/javascript"
+		src="webjars/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+	<script type="text/javascript"
+		src="webjars/jquery/2.0.3/jquery.min.js"></script>
+	<script type="text/javascript">
+		$.getJSON( "tweet/volume", function( data ) {
+			var svg = dimple.newSvg("#tweetvolume", "80%", 600);
+			var chart = new dimple.chart(svg, data);
+			chart.addCategoryAxis("x", "date").title = "Date";
+			chart.addMeasureAxis("y", "count").title = "Tweet Count";
+			chart.addSeries(null, dimple.plot.line);
+			chart.draw();
+		});
+		$.getJSON( "tweet/sentiment", function( data ) {
+			var svg = dimple.newSvg("#tweetsentiment", "80%", 600);
+			var chart = new dimple.chart(svg, data);
+			chart.addCategoryAxis("x", "date").title = "Date";
+			chart.addMeasureAxis("y", "count").title = "Tweet Count";
+			chart.addSeries("Sentiment", dimple.plot.line);
+			chart.addLegend(60, 10, 500, 20, "right");
+			chart.draw();
+		});
+  </script>
+	<div>
+		<ul>
+			<li>http://nvd3.org</li>
+			<li>http://www.chartjs.org/</li>
+			<li>http://mikemcdearmon.com/portfolio/techposts/charting-libraries-using-d3</li>
+			<li>http://www.sitepoint.com/15-best-javascript-charting-libraries/</li>
+		</ul>
+	</div>
+</body>
+</html>

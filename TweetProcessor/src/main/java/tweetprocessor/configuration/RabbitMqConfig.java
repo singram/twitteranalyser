@@ -7,25 +7,26 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import tweetprocessor.MessageReceiver;
-import tweetprocessor.SlowMessageReceiver;
 
 @Configuration
 public class RabbitMqConfig {
 
-	public final static String queueName = "tweets";
+	public static String queueName;
 
 	@Bean
-	Queue queue() {
-		return new Queue(queueName, false);
+	Queue queue(final @Value("${spring.rabbitmq.tweeter.queue}") String queue) {
+		RabbitMqConfig.queueName = queue;
+		return new Queue(queueName, true);
 	}
 
 	@Bean
-	TopicExchange exchange() {
-		return new TopicExchange("spring-boot-exchange");
+	TopicExchange exchange(final @Value("${spring.rabbitmq.tweeter.exchange}") String exchange) {
+		return new TopicExchange(exchange);
 	}
 
 	@Bean
@@ -39,7 +40,7 @@ public class RabbitMqConfig {
 			MessageListenerAdapter listenerAdapter) {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
-		container.setConcurrentConsumers(2);
+		container.setConcurrentConsumers(10);
 		container.setQueueNames(RabbitMqConfig.queueName);
 		container.setMessageListener(listenerAdapter);
 		return container;
@@ -47,8 +48,8 @@ public class RabbitMqConfig {
 
 	@Bean
 	MessageReceiver receiver() {
-		// return new MessageReceiver();
-		return new SlowMessageReceiver();
+		 return new MessageReceiver();
+		//return new SlowMessageReceiver();
 	}
 
 	@Bean

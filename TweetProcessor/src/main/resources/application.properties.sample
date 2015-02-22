@@ -4,3 +4,6 @@
 taskExecutor.corePoolSize=5
 taskExecutor.maxPoolSize=10
 taskExecutor.queueCapacity=25
+
+spring.rabbitmq.tweeter.exchange=spring-boot-exchange
+spring.rabbitmq.tweeter.queue=tweets

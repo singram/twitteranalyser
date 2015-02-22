@@ -1,6 +1,5 @@
 package tweetprocessor.service;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -48,7 +48,7 @@ public class RedisRepository {
 	public void incrementTweetsAtCount(Date date) {
 		incrementTweetCount();
 		hashOps().increment(TWEETS_AT_COUNT,
-				DATEFORMAT.format(roundDate(date)), 1);
+				FastDateFormat.getInstance(DATEFORMAT).format(roundDate(date)), 1);
 	}
 
 	private void incrementTweetCount() {
@@ -60,7 +60,7 @@ public class RedisRepository {
 		incrementSentimentCount(sentiment);
 		hashOps().increment(
 				SENTIMENT_AT_COUNT,
-				DATEFORMAT.format(roundDate(date)) + FIELD_SEPERATOR
+				FastDateFormat.getInstance(DATEFORMAT).format(roundDate(date)) + FIELD_SEPERATOR
 						+ (sentiment + 2), 1);
 	}
 
@@ -85,10 +85,9 @@ public class RedisRepository {
 		return hashOps().entries(SENTIMENT_AT_COUNT);
 	}
 
-	private static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat(
-			"yyyy/MM/dd_HH:mm:ss");
+	private static final String DATEFORMAT = "yyyy/MM/dd_HH:mm:ss";
 
-	private Date roundDate(Date date) {
+	private static Date roundDate(Date date) {
 		// Round date to aggregation duration.
 		return DateUtils.addMilliseconds(date, (int) date.getTime() % REPORTING_PERIOD);
 	}

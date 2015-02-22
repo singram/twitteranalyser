@@ -16,10 +16,11 @@ import tweetprocessor.MessageReceiver;
 @Configuration
 public class RabbitMqConfig {
 
-	public static String queueName;
+	private static String queueName;
 
 	@Bean
 	Queue queue(final @Value("${spring.rabbitmq.tweeter.queue}") String queue) {
+		// TODO(singram): Seems like there should be a far better way to handle this.
 		RabbitMqConfig.queueName = queue;
 		return new Queue(queueName, true);
 	}

@@ -21,6 +21,13 @@ checkstyle {
     configFile = new File(rootDir, "checkstyle.xml")
 }
 
+findbugsMain {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
 jar {
     baseName = 'tweet-processor'
     version =  '0.1.0'

@@ -12,7 +12,6 @@ public class SlowMessageReceiver extends MessageReceiver {
 			super.receiveMessage(message);
 			Thread.sleep(delay);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

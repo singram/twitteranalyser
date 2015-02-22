@@ -44,7 +44,7 @@ public class TagController {
 		for (Map.Entry<String, Integer> entry : data.entrySet()) {
 			HashMap<String, String> record = new HashMap<String, String>();
 			record.put("date", entry.getKey());
-			// FIXME What the hell is going on here such that .getClass doesn't
+			// TODO(singram): What the hell is going on here such that .getClass doesn't
 			// work but ""+entry does
 			// log.info("VALUECLASS " + entry.getValue().getClass());
 			record.put("count", "" + entry.getValue());
@@ -65,7 +65,7 @@ public class TagController {
 					RedisRepository.FIELD_SEPERATOR);
 			record.put("date", keys[0]);
 			record.put("Sentiment", sentimentValueToString(keys[1]));
-			// FIXME What the hell is going on here such that .getClass doesn't
+			// TODO(singram): What the hell is going on here such that .getClass doesn't
 			// work but ""+entry does
 			// log.info("VALUECLASS " + entry.getValue().getClass());
 			record.put("count", "" + entry.getValue());

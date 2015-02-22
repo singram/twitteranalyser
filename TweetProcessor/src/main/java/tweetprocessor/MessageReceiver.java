@@ -39,17 +39,21 @@ public class MessageReceiver {
 	}
 
 	public void receiveMessage(Tweet message) {
-		Set<String> hashTags = hashtagsFromTweet(message.getText());
-		if (!hashTags.isEmpty()) {
-			redisRepo.incrementTagCounts(hashTags);
-			log.info(hashTags.toString());
+		try {
+			Set<String> hashTags = hashtagsFromTweet(message.getText());
+			if (!hashTags.isEmpty()) {
+				redisRepo.incrementTagCounts(hashTags);
+				log.info(hashTags.toString());
+			}
+			int sentiment = this.sentiment.extract(message.getText());
+			log.debug(sentiment + " || " + message.getText());
+			redisRepo.incrementTweetsAtCount(message.getCreatedAt());
+			redisRepo.incrementSentimentAtCount(message.getCreatedAt(),
+					sentiment);
+		} finally {
+			tweetCounter.incrementAndGet();
+			latch.countDown();
 		}
-		int sentiment = this.sentiment.extract(message.getText());
-		log.debug(sentiment + " || " + message.getText());
-		redisRepo.incrementTweetsAtCount(message.getCreatedAt());
-		redisRepo.incrementSentimentAtCount(message.getCreatedAt(), sentiment);
-		tweetCounter.incrementAndGet();
-		latch.countDown();
 	}
 
 	public CountDownLatch getLatch() {

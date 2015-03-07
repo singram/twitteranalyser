@@ -25,20 +25,20 @@ public class TagController {
 	private RedisRepository redisRepo;
 
 	@RequestMapping(value = "/reset", method = RequestMethod.POST)
-	public @ResponseBody
-	void reset() {
+	@ResponseBody 
+	public void reset() {
 		redisRepo.reset();
 	}
 
 	@RequestMapping(value = "/tags", method = RequestMethod.GET)
-	public @ResponseBody
-	Set<String> getTags() {
+	@ResponseBody
+	public Set<String> getTags() {
 		return redisRepo.getTags();
 	}
 
 	@RequestMapping(value = "/tweet/volume", method = RequestMethod.GET)
-	public @ResponseBody
-	ArrayList<HashMap<String, String>> getTweetsAt() {
+	@ResponseBody
+	public ArrayList<HashMap<String, String>> getTweetsAt() {
 		ArrayList<HashMap<String, String>> returnSet = new ArrayList<HashMap<String, String>>();
 		Map<String, Integer> data = redisRepo.getTweetsAtCount();
 		for (Map.Entry<String, Integer> entry : data.entrySet()) {
@@ -54,8 +54,8 @@ public class TagController {
 	}
 
 	@RequestMapping(value = "/tweet/sentiment", method = RequestMethod.GET)
-	public @ResponseBody
-	ArrayList<HashMap<String, String>> getTweetSentimentAt() {
+	@ResponseBody
+	public ArrayList<HashMap<String, String>> getTweetSentimentAt() {
 		ArrayList<HashMap<String, String>> returnSet = new ArrayList<HashMap<String, String>>();
 		Map<String, Integer> data = redisRepo.getSentimentAtCount();
 		String keys[];

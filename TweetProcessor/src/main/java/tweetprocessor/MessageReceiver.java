@@ -1,5 +1,7 @@
 package tweetprocessor;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -11,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.social.twitter.api.Tweet;
+import org.springframework.social.twitter.api.TwitterProfile;
 
 import tweetprocessor.service.RedisRepository;
 import tweetprocessor.service.SentimentAnalysis;
@@ -38,8 +41,10 @@ public class MessageReceiver {
 		log.info("Creating MessageReceiver");
 	}
 
-	public void receiveMessage(Tweet message) {
+	public void receiveMessage(HashMap<String, Serializable> map) {
 		try {
+			Tweet message = (Tweet) map.get("tweet");
+			TwitterProfile user = (TwitterProfile) map.get("user");
 			Set<String> hashTags = hashtagsFromTweet(message.getText());
 			if (!hashTags.isEmpty()) {
 				redisRepo.incrementTagCounts(hashTags);

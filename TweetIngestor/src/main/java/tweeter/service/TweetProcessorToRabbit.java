@@ -1,5 +1,8 @@
 package tweeter.service;
 
+import java.io.Serializable;
+import java.util.HashMap;
+
 import org.apache.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +23,18 @@ public class TweetProcessorToRabbit implements TweetProcessor {
 	@Autowired
 	RabbitTemplate rabbitTemplate;
 
+	@Autowired
+	private TweetTracker tweetTracker;
+
 	@Override
-	public void processTweet(Tweet tweet) {
+	public void process(Tweet tweet) {
 		log.debug("Processing: " + tweet.getText());
 		if (tweet.getLanguageCode().equalsIgnoreCase("en")) {
-			rabbitTemplate.convertAndSend(RabbitMqConfig.queueName, tweet);
+			HashMap<String, Serializable> map = new HashMap<String, Serializable>();
+			map.put("tweet", tweet);
+			map.put("user", tweet.getUser());	
+			rabbitTemplate.convertAndSend(RabbitMqConfig.queueName, map);
+			tweetTracker.incrementTweetsToSinkCounter();
 		}
 	}
 

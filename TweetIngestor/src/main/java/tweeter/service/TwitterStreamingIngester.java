@@ -65,8 +65,8 @@ public class TwitterStreamingIngester implements StreamListener {
 
 	@Override
 	public void onTweet(Tweet tweet) {
-		tweetTracker.incrementTweets();
-		tweetProcessor.processTweet(tweet);
+		tweetTracker.incrementTweetCounter();
+		tweetProcessor.process(tweet);
 	}
 
 	@Override

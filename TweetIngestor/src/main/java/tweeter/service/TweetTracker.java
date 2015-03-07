@@ -11,13 +11,18 @@ public class TweetTracker {
 
 	private Logger log = Logger.getLogger(TweetTracker.class);
 
-	private AtomicInteger tweets = new AtomicInteger(0);
+	private AtomicInteger tweetCounter = new AtomicInteger(0);
+	private AtomicInteger tweetsToSinkCounter = new AtomicInteger(0);
 	private AtomicInteger deletedEvents = new AtomicInteger(0);
 	private AtomicInteger limitEvents = new AtomicInteger(0);
 	private AtomicInteger warningEvents = new AtomicInteger(0);
 
-	public void incrementTweets() {
-		tweets.incrementAndGet();
+	public void incrementTweetCounter() {
+		tweetCounter.incrementAndGet();
+	}
+
+	public void incrementTweetsToSinkCounter() {
+		tweetsToSinkCounter.incrementAndGet();
 	}
 
 	public void incrementDeletedEvents() {
@@ -34,9 +39,9 @@ public class TweetTracker {
 
 	@Override
 	public String toString() {
-		return (String.format("Tweets: %d Deleted: %d Limited: %d Warning %d",
-				tweets.get(), deletedEvents.get(), limitEvents.get(),
-				warningEvents.get()));
+		return (String.format("Tweets: %d Deleted: %d Limited: %d Warnings: %d Stored: %d ",
+				tweetCounter.get(), deletedEvents.get(), limitEvents.get(),
+				warningEvents.get(), tweetsToSinkCounter.get()));
 	}
 
 	@Scheduled(fixedRate = 5000)

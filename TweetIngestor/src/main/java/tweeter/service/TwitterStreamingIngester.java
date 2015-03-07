@@ -1,14 +1,19 @@
 package tweeter.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.social.NotAuthorizedException;
-import org.springframework.social.twitter.api.*;
+import org.springframework.social.twitter.api.FilterStreamParameters;
+import org.springframework.social.twitter.api.StreamDeleteEvent;
+import org.springframework.social.twitter.api.StreamListener;
+import org.springframework.social.twitter.api.StreamWarningEvent;
+import org.springframework.social.twitter.api.Tweet;
+import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Service;
-
-import org.apache.log4j.Logger;
-
-import java.util.*;
 
 @Service
 public class TwitterStreamingIngester implements StreamListener {
@@ -45,7 +50,7 @@ public class TwitterStreamingIngester implements StreamListener {
 	}
 
 	private boolean isAuthorized() {
-		// TODO There should be a better way of doing this.
+		// TODO(ingrams): There should be a better way of doing this.
 		boolean authorized = false;
 		try {
 			String userName = twitter.userOperations().getAccountSettings()

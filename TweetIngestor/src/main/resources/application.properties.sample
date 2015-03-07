@@ -5,6 +5,7 @@
 
 # configure application
 spring.main.web-environment=false
+spring.thymeleaf.cache=false
 
 # configure twitter
 spring.social.twitter.appId=myKey

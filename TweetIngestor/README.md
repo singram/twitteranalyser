@@ -9,11 +9,14 @@ Why not?  I wanted to write a short project that would exercise the Spring-Boot 
 
 ## Pre-requists
 
-1. Running RabbitMQ Server on local system
+1. Java SDK 1.7+
 
-2. Twitter account with registered application
+2. Running RabbitMQ Server on local system
 
-## Installation
+3. Twitter account with registered application
+
+# Installation Instructions
+
 ```
  git clone git://github.com/singram/twitteranalyser.git
  cd twitteranalyser/TweetIngestor
@@ -21,7 +24,9 @@ Why not?  I wanted to write a short project that would exercise the Spring-Boot 
  vi src/main/resources/application.properties
  ./gradlew build
 ```
+
 ### Eclipse
+
 To generate Eclipse metadata (.classpath and .project files), do the following:
 ```
  ./gradlew eclipse

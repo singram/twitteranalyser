@@ -10,12 +10,11 @@ import org.springframework.social.twitter.api.impl.TwitterTemplate;
 public class TwitterConfig {
 
 	@Bean
-	// Params injected from application.properties file:
 	public Twitter twitter(
-			final @Value("${spring.social.twitter.appId}") String appId,
-			final @Value("${spring.social.twitter.appSecret}") String appSecret,
-			final @Value("${spring.social.twitter.accessToken}") String accessToken,
-			final @Value("${spring.social.twitter.accessTokenSecret}") String accessTokenSecret) {
+			@Value("${spring.social.twitter.appId}") final String appId,
+			@Value("${spring.social.twitter.appSecret}") final String appSecret,
+			@Value("${spring.social.twitter.accessToken}") final String accessToken,
+			@Value("${spring.social.twitter.accessTokenSecret}") final String accessTokenSecret) {
 		return new TwitterTemplate(appId, appSecret, accessToken,
 				accessTokenSecret);
 	}

@@ -14,13 +14,13 @@ public class RabbitMqConfig {
 	public static String queueName;
 
 	@Bean
-	Queue queue(final @Value("${spring.rabbitmq.tweeter.queue}") String queue) {
+	Queue queue(@Value("${spring.rabbitmq.tweeter.queue}") final String queue) {
 		RabbitMqConfig.queueName = queue;
 		return new Queue(queueName, true);
 	}
 
 	@Bean
-	TopicExchange exchange(final @Value("${spring.rabbitmq.tweeter.exchange}") String exchange) {
+	TopicExchange exchange(@Value("${spring.rabbitmq.tweeter.exchange}") final String exchange) {
 		return new TopicExchange(exchange);
 	}
 

@@ -4,6 +4,8 @@ Experiments with pub/sub models for twitter analysis
 http://blog.pivotal.io/cloud-foundry-pivotal/features/how-we-found-out-the-patriots-beat-the-seahawks-on-twitter-too
 http://blog.pivotal.io/pivotal/products/spring-xd-for-real-time-analytics
 
+http://www.d3noob.org/2013/01/smoothing-out-lines-in-d3js.html
+
 nlp.stanford.edu/software/corenlp.shtml
 
 # TODO

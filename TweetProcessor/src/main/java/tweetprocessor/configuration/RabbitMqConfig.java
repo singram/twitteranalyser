@@ -12,16 +12,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import tweetprocessor.MessageReceiver;
+import tweetprocessor.SlowMessageReceiver;
 
 @Configuration
 public class RabbitMqConfig {
 
-	private static String queueName;
-
 	@Bean
-	Queue queue(@Value("${spring.rabbitmq.tweeter.queue}") final String queue) {
-		// TODO(singram): Seems like there should be a far better way to handle this.
-		RabbitMqConfig.queueName = queue;
+	Queue queue(@Value("${spring.rabbitmq.tweeter.queue}") final String queueName) {
 		return new Queue(queueName, true);
 	}
 
@@ -31,26 +28,28 @@ public class RabbitMqConfig {
 	}
 
 	@Bean
-	Binding binding(Queue queue, TopicExchange exchange) {
+	Binding binding(Queue queue, TopicExchange exchange, @Value("${spring.rabbitmq.tweeter.queue}") final String queueName) {
 		return BindingBuilder.bind(queue).to(exchange).with(queueName);
 	}
 
 	@Bean
 	SimpleMessageListenerContainer container(
 			ConnectionFactory connectionFactory,
-			MessageListenerAdapter listenerAdapter) {
+			MessageListenerAdapter listenerAdapter,
+			@Value("${spring.rabbitmq.tweeter.queue}") final String queueName) {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		container.setConcurrentConsumers(10);
-		container.setQueueNames(RabbitMqConfig.queueName);
+		container.setQueueNames(queueName);
 		container.setMessageListener(listenerAdapter);
 		return container;
 	}
 
+	// TODO(singram): Perhaps there is a better way to do this with application.properties
 	@Bean
 	MessageReceiver receiver() {
-		 return new MessageReceiver();
-		//return new SlowMessageReceiver();
+		// return new MessageReceiver();
+		return new SlowMessageReceiver();
 	}
 
 	@Bean

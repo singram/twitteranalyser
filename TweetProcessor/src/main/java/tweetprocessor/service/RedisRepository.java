@@ -1,6 +1,7 @@
 package tweetprocessor.service;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class RedisRepository {
 	public void incrementTweetsAtCount(Date date) {
 		incrementTweetCount();
 		hashOps().increment(TWEETS_AT_COUNT,
-				FastDateFormat.getInstance(DATEFORMAT).format(roundDate(date)), 1);
+				formatDate(date), 1);
 	}
 
 	private void incrementTweetCount() {
@@ -60,7 +61,7 @@ public class RedisRepository {
 		incrementSentimentCount(sentiment);
 		hashOps().increment(
 				SENTIMENT_AT_COUNT,
-				FastDateFormat.getInstance(DATEFORMAT).format(roundDate(date)) + FIELD_SEPERATOR
+				formatDate(date) + FIELD_SEPERATOR
 						+ (sentiment + 2), 1);
 	}
 
@@ -87,9 +88,14 @@ public class RedisRepository {
 
 	private static final String DATEFORMAT = "yyyy/MM/dd_HH:mm:ss";
 
+	private static String formatDate(Date date) {
+		return FastDateFormat.getInstance(DATEFORMAT).format(roundDate(date));		
+	}
+	
+	@SuppressWarnings("deprecation")
 	private static Date roundDate(Date date) {
-		// Round date to aggregation duration.
-		return DateUtils.addMilliseconds(date, (int) date.getTime() % REPORTING_PERIOD);
+		date = DateUtils.truncate(date, Calendar.SECOND);
+		return DateUtils.setSeconds(date, date.getSeconds() - (date.getSeconds()%5));
 	}
 
 	private HashOperations<String, String, Integer> hashOps() {

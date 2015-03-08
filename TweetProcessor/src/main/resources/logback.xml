@@ -7,10 +7,10 @@
 	<logger name="tweetprocessor" additivity="false" level="info">
 		<appender-ref ref="stdout" />
 	</logger>
-	<logger name="org.springframework" additivity="false" level="error">
+	<logger name="org.springframework" additivity="false" level="info">
 		<appender-ref ref="stdout" />
 	</logger>
-	<root level="error">
+	<root level="info">
 		<appender-ref ref="stdout" />
 	</root>
 </configuration>

@@ -24,6 +24,11 @@ public class SentimentAnalysis {
 		NLP = new StanfordCoreNLP(props);
 	}
 
+	/**
+	 * Analyze the text provided and return a score based upon the sentiment of the text.
+	 * @param text  The text provide a sentiment score on 
+	 * @return      Number between -2 & 2 where -2 is very negative and +2 is very positive
+	 */
 	public synchronized int extract(String text) {
 		int mainSentiment = 2;
 		if (!StringUtils.isBlank(text)) {

@@ -37,20 +37,31 @@
 	<script type="text/javascript"
 		src="webjars/jquery/2.0.3/jquery.min.js"></script>
 	<script type="text/javascript">
+	    var timePeriod = d3.time.minutes;
+	    var timeInterval = 10;
 		$.getJSON( "tweet/volume", function( data ) {
 			var svg = dimple.newSvg("#tweetvolume", "80%", 600);
 			var chart = new dimple.chart(svg, data);
-			chart.addCategoryAxis("x", "date").title = "Date";
+			var x = chart.addTimeAxis("x", "date", "%Y/%m/%d_%H:%M:%S","%Y/%m/%d_%H:%M:%S");
+			x.timePeriod = timePeriod;
+			x.timeInterval = timeInterval;
+    		x.title = "Date";
 			chart.addMeasureAxis("y", "count").title = "Tweet Count";
-			chart.addSeries(null, dimple.plot.line);
+			var s = chart.addSeries(null, dimple.plot.line);
+			s.interpolation = "cardinal";
 			chart.draw();
 		});
 		$.getJSON( "tweet/sentiment", function( data ) {
 			var svg = dimple.newSvg("#tweetsentiment", "80%", 600);
 			var chart = new dimple.chart(svg, data);
-			chart.addCategoryAxis("x", "date").title = "Date";
-			chart.addMeasureAxis("y", "count").title = "Tweet Count";
-			chart.addSeries("Sentiment", dimple.plot.line);
+			var x = chart.addTimeAxis("x", "date", "%Y/%m/%d_%H:%M:%S","%Y/%m/%d_%H:%M:%S");
+			x.timePeriod = timePeriod;
+			x.timeInterval = timeInterval;
+    		x.title = "Date";
+			chart.addMeasureAxis("y", "count").title = "Sentiment Count";
+			var s = chart.addSeries("Sentiment", dimple.plot.line);
+			s.interpolation = "basis";
+			s.aggregate = dimple.aggregateMethod.sum;
 			chart.addLegend(60, 10, 500, 20, "right");
 			chart.draw();
 		});

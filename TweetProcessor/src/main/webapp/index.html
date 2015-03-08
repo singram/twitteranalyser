@@ -53,6 +53,7 @@
 		});
 		$.getJSON( "tweet/sentiment", function( data ) {
 			var svg = dimple.newSvg("#tweetsentiment", "80%", 600);
+			data = dimple.filterData(data, "Sentiment", ["Negative", "Positive"]);
 			var chart = new dimple.chart(svg, data);
 			var x = chart.addTimeAxis("x", "date", "%Y/%m/%d_%H:%M:%S","%Y/%m/%d_%H:%M:%S");
 			x.timePeriod = timePeriod;

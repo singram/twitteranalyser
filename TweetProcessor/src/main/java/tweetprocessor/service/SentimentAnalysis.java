@@ -1,9 +1,13 @@
 package tweetprocessor.service;
 
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+
+import tweetprocessor.MessageReceiver;
 
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.neural.rnn.RNNCoreAnnotations;
@@ -15,6 +19,8 @@ import edu.stanford.nlp.util.CoreMap;
 
 @Service
 public class SentimentAnalysis {
+
+	private Logger log = Logger.getLogger(SentimentAnalysis.class);
 
 	public static final StanfordCoreNLP NLP;
 
@@ -31,6 +37,8 @@ public class SentimentAnalysis {
 	 */
 	public synchronized int extract(String text) {
 		int mainSentiment = 2;
+		text = cleanText(text);
+		log.debug("Sentiment text: " + text);
 		if (!StringUtils.isBlank(text)) {
 			int longest = 0;
 			Annotation annotation = NLP.process(text);
@@ -49,5 +57,17 @@ public class SentimentAnalysis {
 			}
 		}
 		return mainSentiment - 2;
+	}
+	
+	private static final String HASHTAG_PATTERN = "#\\w+";
+	private static final String LINK_PATTERN = "https?://[\\w\\./]+";
+	public String cleanText(String text) {
+		// Remove non-ascii content (usually emoticons etc)
+		String cleanText = text.replaceAll("[^\\x00-\\x7F]", "");
+		// Strip hash tags
+		cleanText = cleanText.replaceAll(HASHTAG_PATTERN, "");
+		// Strip links
+		cleanText = cleanText.replaceAll(LINK_PATTERN, "");
+		return cleanText;
 	}
 }

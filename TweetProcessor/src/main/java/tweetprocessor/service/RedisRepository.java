@@ -20,8 +20,8 @@ public class RedisRepository {
 	@Autowired
 	private StringRedisTemplate template;
 
-	// Aggregation duration in milliseconds
-	public static final int REPORTING_PERIOD = 5000;
+	// Aggregation duration in seconds
+	public static final int REPORTING_PERIOD = 5;
 	public static final String FIELD_SEPERATOR = "|";
 	private static final String TAG_COUNTS = "tagcounts";
 	private static final String TWEET_COUNT = "tweet_count";
@@ -48,8 +48,7 @@ public class RedisRepository {
 
 	public void incrementTweetsAtCount(Date date) {
 		incrementTweetCount();
-		hashOps().increment(TWEETS_AT_COUNT,
-				formatDate(date), 1);
+		hashOps().increment(TWEETS_AT_COUNT, formatDate(date), 1);
 	}
 
 	private void incrementTweetCount() {
@@ -59,10 +58,8 @@ public class RedisRepository {
 	public void incrementSentimentAtCount(Date date, int sentiment) {
 		// sentiment range is -2 -> +2
 		incrementSentimentCount(sentiment);
-		hashOps().increment(
-				SENTIMENT_AT_COUNT,
-				formatDate(date) + FIELD_SEPERATOR
-						+ (sentiment + 2), 1);
+		hashOps().increment(SENTIMENT_AT_COUNT,
+				formatDate(date) + FIELD_SEPERATOR + (sentiment + 2), 1);
 	}
 
 	private void incrementSentimentCount(int sentiment) {
@@ -89,13 +86,14 @@ public class RedisRepository {
 	private static final String DATEFORMAT = "yyyy/MM/dd_HH:mm:ss";
 
 	private static String formatDate(Date date) {
-		return FastDateFormat.getInstance(DATEFORMAT).format(roundDate(date));		
+		return FastDateFormat.getInstance(DATEFORMAT).format(roundDate(date));
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private static Date roundDate(Date date) {
 		date = DateUtils.truncate(date, Calendar.SECOND);
-		return DateUtils.setSeconds(date, date.getSeconds() - (date.getSeconds()%5));
+		return DateUtils.setSeconds(date,
+				date.getSeconds() - (date.getSeconds() % REPORTING_PERIOD));
 	}
 
 	private HashOperations<String, String, Integer> hashOps() {
